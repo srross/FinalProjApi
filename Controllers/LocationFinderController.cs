@@ -17,10 +17,11 @@ namespace FinalProjApi.Controllers
 
 
         // GET api/<LocationFinderController>/5
-        [HttpGet("{zip}")]
+        [HttpGet("{zipCode}")]
         public async Task<IActionResult> GetWeather(string zipCode)
         {
             _accuWeatherService.GetLocationKey(zipCode);
+            
 
             return Ok();
         }
