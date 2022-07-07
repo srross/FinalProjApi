@@ -1,5 +1,7 @@
 using FinalProjApi.Data;
 using FinalProjApi.Middleware;
+using FinalProjApi.Services;
+using FinalProjApi.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using System.Security.Claims;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IAccuWeatherService, AccuWeatherService>();
 
 builder.Services.AddDbContext<FinalProjectDBContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("AppDb")));
 
