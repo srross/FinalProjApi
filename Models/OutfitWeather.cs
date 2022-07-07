@@ -2,7 +2,7 @@
 {
     public class OutfitWeather
     {
-		public int OutfitId { get; set; } // Primary Key
+		public int Id { get; set; } // Primary Key
 		public int OutfitScale { get; set; } // use max OutfitScale number for this variable
 		public string OutfitBottom { get; set; }
 		public string OutfitTop { get; set; }

@@ -14,7 +14,7 @@ namespace FinalProjApi.Services
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("https://dataservice.accuweather.com");
             var response = await client.GetFromJsonAsync<List<LocationFinder>>("/locations/v1/postalcodes/search?apikey=" + apiKey + "&q=" + zip);
-         
+            // response[0].Key
             return response;
         }
     }

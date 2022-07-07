@@ -20,7 +20,7 @@ namespace FinalProjApi.Controllers
         [HttpGet("{zipCode}")]
         public async Task<IActionResult> GetWeather(string zipCode)
         {
-            _accuWeatherService.GetLocationKey(zipCode);
+            await _accuWeatherService.GetLocationKey(zipCode);
             
 
             return Ok();
