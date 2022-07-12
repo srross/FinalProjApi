@@ -3,6 +3,7 @@ using FinalProjApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinalProjApi.Migrations
 {
     [DbContext(typeof(FinalProjectDBContext))]
-    partial class FinalProjectDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220707235051_addedTables")]
+    partial class addedTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,12 +30,6 @@ namespace FinalProjApi.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<double>("MaxTemperature")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MinTemperature")
-                        .HasColumnType("float");
 
                     b.Property<string>("OutfitBottom")
                         .IsRequired()
