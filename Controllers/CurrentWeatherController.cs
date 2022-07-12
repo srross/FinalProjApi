@@ -7,23 +7,24 @@ namespace FinalProjApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LocationFinderController : ControllerBase
+    public class CurrentWeatherController : ControllerBase
     {
         private IAccuWeatherService _accuWeatherService;
-        public LocationFinderController(IAccuWeatherService accuWeatherService)
+        public CurrentWeatherController(IAccuWeatherService accuWeatherService)
         {
             _accuWeatherService = accuWeatherService;
         }
 
 
-        // GET api/<LocationFinderController>/5
+        // GET api/<CurrentWeatherController>/5
         [HttpGet("{zipCode}")]
         public async Task<IActionResult> GetWeather(string zipCode)
         {
-            await _accuWeatherService.GetLocationKey(zipCode);
+
+            var Current_Weather = await _accuWeatherService.GetCurrentWeather(zipCode);
             
 
-            return Ok();
+            return Ok(Current_Weather);
         }
 
     }
