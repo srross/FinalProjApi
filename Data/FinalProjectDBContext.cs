@@ -9,6 +9,7 @@ namespace FinalProjApi.Data
         {
 
         }
+
         public DbSet<OutfitWeather> Outfits { get; set; }
         public DbSet<ZipCodeKey> ZipCodeKeys { get; set; }
         public DbSet<User> Users { get; set; }

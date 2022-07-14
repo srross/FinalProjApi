@@ -4,6 +4,7 @@ namespace FinalProjApi.Services.Interfaces
 {
     public interface IOutfitWeatherService
     {
-        List<OutfitWeather> GetCurrentWeatherOutfit(int currentTemperature);
+        Task<List<OutfitWeather>> GetCurrentWeatherOutfit(double currentTemperature);
+        //Task<List<OutfitWeather>> GetAllOutfitsByUserId(int userId);
     }
 }
