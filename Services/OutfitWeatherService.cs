@@ -14,12 +14,19 @@ namespace FinalProjApi.Services
             _context = context;
         }
 
-        public List<OutfitWeather> GetCurrentWeatherOutfit(int currentTemperature)
+        public async Task<List<OutfitWeather>> GetCurrentWeatherOutfit(double currentTemperature)
         {
             var defaultOutfit = _context.Outfits.Where(x => x.MinTemperature <= currentTemperature && x.MaxTemperature >= currentTemperature).ToList();
 
             return defaultOutfit;
-
         }
+        
+        // Cleanup later
+        //public async Task<List<OutfitWeather>> GetAllOutfitsByUserId(int userId)
+        //{
+        //    var userOutfits = _context.Outfits.Where(x => x.UserId == userId).ToList();
+
+        //    return userOutfits;
+        //}
     }
 }

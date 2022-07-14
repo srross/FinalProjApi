@@ -8,7 +8,7 @@
 		public string OutfitTop { get; set; }
 		public string OutfitHead { get; set; }
 		public string OutfitHands { get; set; }
-		public string OutfitImage { get; set; }
+		public string? OutfitImage { get; set; }
 		public int UserId { get; set; } // Foreign Key
 		public double MaxTemperature { get; set; }
 	}
