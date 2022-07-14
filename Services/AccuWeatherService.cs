@@ -42,7 +42,13 @@ namespace FinalProjApi.Services
                 response = await client.GetFromJsonAsync<List<LocationFinder>>("/locations/v1/postalcodes/search?apikey=" + apiKey + "&q=" + zip);
                 //var dbKey = response[0].Key;
                 currentWeather = await client.GetFromJsonAsync<List<CurrentWeather>>("/currentconditions/v1/" + response[0].Key + "?apikey=" + apiKey + "&details=true");
-                // Write zip and key to db
+                // Write zip and key to ZipCodeKeys db
+                var ZipCodeKeyObj = new ZipCodeKey() { ZipCode = zip, Key = response[0].Key };
+                _context.ZipCodeKeys.Add(ZipCodeKeyObj);
+                await _context.SaveChangesAsync();
+                // Write zip to Users db
+               /* var ZipCodeKeyObj = new ZipCodeKey() { ZipCode = zip, Key = response[0].Key };
+                _context.ZipCodeKeys.Add(ZipCodeKeyObj);*/
             }
             else
             {
