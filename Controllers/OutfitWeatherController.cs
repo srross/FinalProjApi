@@ -1,6 +1,5 @@
 ﻿using FinalProjApi.Models;
 using FinalProjApi.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinalProjApi.Controllers
@@ -16,32 +15,42 @@ namespace FinalProjApi.Controllers
             _outfitWeatherService = outfitWeatherService;
         }
 
-        //[HttpGet("{temperature}")]
-        //public async Task<OutfitWeather> GetOutfitByTemperature(double temperature)
-        //{
-        //    //List<OutfitWeather> listOutfits = new List<OutfitWeather>();
-
-        //    return _outfitWeatherService.GetCurrentWeatherOutfit(temperature);
-
-
-        //}
-
         // GET: api/OutfitA/5
         [HttpGet("{temperature}")]
         public async Task<ActionResult<List<OutfitWeather>>> GetOutfitByTemperature(double temperature)
         {
-            //if (_context.Outfits == null)
-            //{
-            //    return NotFound();
-            //}
             var outfitWeather = await _outfitWeatherService.GetCurrentWeatherOutfit(temperature);
 
-            //if (outfitWeather == null)
-            //{
-            //    return NotFound();
-            //}
-
             return outfitWeather;
+        }
+
+        // POST: api/OutfitA
+        [HttpPost]
+        public async void AddOutfitToUserProfile(OutfitWeather outfit)
+        {
+            _outfitWeatherService.AddOutfitToUserProfile(outfit);
+        }
+
+        // PUT: api/OutfitA/5
+        [HttpPut("{id}")]
+        public void UpdateUserOutfit(int id, OutfitWeather outfit)
+        {
+            if (id > 8) // maybe add userId 999 as a condition check on default outfit.
+            {
+                _outfitWeatherService.UpdateUserOutfit(id, outfit);
+                //return NoContent();
+            }
+        }
+
+        // DELETE: api/OutfitA/5
+        [HttpDelete("{id}")]
+        public void DeleteUserOutfit(int id)
+        {
+            if (id > 8) // maybe add userId 999 as a condition check on default outfit.
+            {
+                _outfitWeatherService.DeleteUserOutfit(id);
+                //return NoContent();
+            }
         }
 
         //[HttpGet("{userId}")]
