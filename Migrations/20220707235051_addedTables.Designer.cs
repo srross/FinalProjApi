@@ -23,7 +23,7 @@ namespace FinalProjApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("FinalProjApi.Models.OutfitWeather", b =>
+            modelBuilder.Entity("FinalProjApi.Models.Outfit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
