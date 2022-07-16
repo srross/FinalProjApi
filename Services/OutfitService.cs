@@ -6,23 +6,23 @@ using Microsoft.EntityFrameworkCore;
 namespace FinalProjApi.Services
 
 {
-    public class OutfitWeatherService : IOutfitWeatherService
+    public class OutfitService : IOutfitService
     {
         private readonly FinalProjectDBContext _context;
 
-        public OutfitWeatherService(FinalProjectDBContext context)
+        public OutfitService(FinalProjectDBContext context)
         {
             _context = context;
         }
 
-        public async Task<List<OutfitWeather>> GetCurrentWeatherOutfit(double currentTemperature)
+        public async Task<List<Outfit>> GetCurrentWeatherOutfit(double currentTemperature)
         {
             var defaultOutfit = _context.Outfits.Where(x => x.MinTemperature <= currentTemperature && x.MaxTemperature >= currentTemperature).ToList();
 
             return defaultOutfit;
         }
 
-        public async void AddOutfitToUserProfile(OutfitWeather outfit)
+        public async void AddOutfitToUserProfile(Outfit outfit)
         {
             if (_context.Outfits == null)
             {
@@ -47,14 +47,14 @@ namespace FinalProjApi.Services
             _context.SaveChangesAsync();
         }
 
-        public void UpdateUserOutfit(int id, OutfitWeather outfitWeather)
+        public void UpdateUserOutfit(int id, Outfit outfit)
         {
-            if (id != outfitWeather.Id)
+            if (id != outfit.Id)
             {
                 //return "BadRequest";
             }
 
-            _context.Entry(outfitWeather).State = EntityState.Modified;
+            _context.Entry(outfit).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +62,7 @@ namespace FinalProjApi.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OutfitWeatherExists(id))
+                if (!OutfitExists(id))
                 {
                     //return "NotFound";
                 }
@@ -75,12 +75,12 @@ namespace FinalProjApi.Services
             //return "Looks like it worked.";
         }
 
-        private bool OutfitWeatherExists(int id)
+        private bool OutfitExists(int id)
         {
             return (_context.Outfits?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        //public async Task<List<OutfitWeather>> GetAllOutfitsByUserId(int userId)
+        //public async Task<List<Outfit>> GetAllOutfitsByUserId(int userId)
         //{
         //    var userOutfits = _context.Outfits.Where(x => x.UserId == userId).ToList();
 

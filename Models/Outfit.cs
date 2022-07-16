@@ -1,6 +1,6 @@
 ﻿namespace FinalProjApi.Models
 {
-    public class OutfitWeather
+    public class Outfit
     {
 		public int Id { get; set; } // Primary Key
 		public double MinTemperature { get; set; }
