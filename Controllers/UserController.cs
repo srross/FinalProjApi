@@ -17,7 +17,7 @@ namespace FinalProjApi.Controllers
 
         // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("AddNewUser")]
         public async Task<ActionResult<User>> AddNewUser(User user)
         {
             if (_context.Users == null)
@@ -32,14 +32,14 @@ namespace FinalProjApi.Controllers
         }
 
         //GET: api/User/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(int id)
+        [HttpGet("GetUserById/{userId}")]
+        public async Task<ActionResult<User>> GetUserById(int userId)
         {
             if (_context.Users == null)
             {
                 return NotFound();
             }
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FindAsync(userId);
 
             if (user == null)
             {

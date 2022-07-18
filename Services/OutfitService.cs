@@ -1,6 +1,7 @@
 ﻿using FinalProjApi.Data;
 using FinalProjApi.Models;
 using FinalProjApi.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinalProjApi.Services
@@ -15,11 +16,19 @@ namespace FinalProjApi.Services
             _context = context;
         }
 
-        public async Task<List<Outfit>> GetCurrentWeatherOutfit(double currentTemperature)
+        public List<Outfit> GetOutfitByTemperature(double currentTemperature)
         {
-            var defaultOutfit = _context.Outfits.Where(x => x.MinTemperature <= currentTemperature && x.MaxTemperature >= currentTemperature).ToList();
+            return _context.Outfits.Where(x => x.MinTemperature <= currentTemperature && x.MaxTemperature >= currentTemperature).ToList();
+        }
 
-            return defaultOutfit;
+        public List<Outfit> GetAllOutfits()
+        {
+            return _context.Outfits.ToList();
+        }
+
+        public List<Outfit> GetAllOutfitsByUserId(int userId)
+        {
+            return _context.Outfits.Where(x => x.UserId == userId).ToList();
         }
 
         public async void AddOutfitToUserProfile(Outfit outfit)
@@ -79,12 +88,5 @@ namespace FinalProjApi.Services
         {
             return (_context.Outfits?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-
-        //public async Task<List<Outfit>> GetAllOutfitsByUserId(int userId)
-        //{
-        //    var userOutfits = _context.Outfits.Where(x => x.UserId == userId).ToList();
-
-        //    return userOutfits;
-        //}
     }
 }
