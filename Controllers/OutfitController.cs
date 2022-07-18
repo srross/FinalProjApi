@@ -1,4 +1,5 @@
-﻿using FinalProjApi.Models;
+﻿using FinalProjApi.Data;
+using FinalProjApi.Models;
 using FinalProjApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,54 +11,68 @@ namespace FinalProjApi.Controllers
     {
         private readonly IOutfitService _outfitService;
 
-        public OutfitController(IOutfitService outfitService)
+        public OutfitController(IOutfitService outfitService, FinalProjectDBContext context)
         {
             _outfitService = outfitService;
         }
 
-        // GET: api/OutfitA/5
-        [HttpGet("{temperature}")]
-        public async Task<ActionResult<List<Outfit>>> GetOutfitByTemperature(double temperature)
+        // GET: Outfit/GetOutfitByTemperature/52
+        [HttpGet("GetOutfitByTemperature/{temperature}")]
+        public List<Outfit> GetOutfitByTemperature(double temperature)
         {
-            var outfit = await _outfitService.GetCurrentWeatherOutfit(temperature);
-
-            return outfit;
+            return _outfitService.GetOutfitByTemperature(temperature);
         }
 
-        // POST: api/OutfitA
-        [HttpPost]
-        public async void AddOutfitToUserProfile(Outfit outfit)
+        // GET: 'Outfit/GetAllOutfits'
+        [HttpGet("GetAllOutfits")]
+        public List<Outfit> GetAllOutfits()
         {
-            _outfitService.AddOutfitToUserProfile(outfit);
+            return _outfitService.GetAllOutfits();
         }
 
-        // PUT: api/OutfitA/5
-        [HttpPut("{id}")]
-        public void UpdateUserOutfit(int id, Outfit outfit)
+        // GET: 'Outfit/GetAllOutfitsByUserId/1
+        [HttpGet("GetAllOutfitsByUserId/{userId}")]
+        public List<Outfit> GetAllOutfitsByUserId(int userId)
         {
-            if (id > 8) // maybe add userId 999 as a condition check on default outfit.
+            return _outfitService.GetAllOutfitsByUserId(userId);
+        }
+
+        // POST: Outfit/AddOutfitToUserProfile, outfitObj
+        [HttpPost("AddOutfitToUserProfile")]
+        public List<Outfit> AddOutfitToUserProfile(Outfit outfitObj)
+        {
+            var userId = outfitObj.Id;
+
+            _outfitService.AddOutfitToUserProfile(outfitObj);
+
+            return _outfitService.GetAllOutfitsByUserId(userId);
+        }
+
+        // PUT: api/Outfit/5
+        [HttpPut("UpdateUserOutfit/{outfitId}")]
+        public void UpdateUserOutfit(int outfitId, Outfit outfitObj)
+        {
+            // maybe add userId 999 as a condition check on default outfit.
+            // add check for doesOutfitExist()
+            if (outfitId > 8)
             {
-                _outfitService.UpdateUserOutfit(id, outfit);
+                _outfitService.UpdateUserOutfit(outfitId, outfitObj);
                 //return NoContent();
             }
         }
 
         // DELETE: api/OutfitA/5
-        [HttpDelete("{id}")]
-        public void DeleteUserOutfit(int id)
+        // Consider soft delete for user outfit history ( add isActive or archive column to table)
+        [HttpDelete("DeleteUserOutfit/{outfitId}")]
+        public void DeleteUserOutfit(int outfitId)
         {
-            if (id > 8) // maybe add userId 999 as a condition check on default outfit.
+            // maybe add userId 999 as a condition check on default outfit.
+            // add check for doesOutfitExist()
+            if (outfitId > 8)
             {
-                _outfitService.DeleteUserOutfit(id);
+                _outfitService.DeleteUserOutfit(outfitId);
                 //return NoContent();
             }
         }
-
-        //[HttpGet("{userId}")]
-        //public async Task<ActionResult<List<Outfit>>> GetAllOutfitsByUserId(int userId)
-        //{
-        //    var outfits = await _outfitService.GetAllOutfitsByUserId(userId);
-        //    return Ok(outfits);
-        //}
     }
 }
