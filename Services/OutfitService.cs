@@ -26,9 +26,9 @@ namespace FinalProjApi.Services
             return _context.Outfits.ToList();
         }
 
-        public List<Outfit> GetAllOutfitsByUserId(int userId)
+        public List<Outfit> GetAllOutfitsByAuthId(string authId)
         {
-            return _context.Outfits.Where(x => x.UserId == userId).ToList();
+            return _context.Outfits.Where(x => x.AuthUserId == authId).ToList();
         }
 
         public async void AddOutfitToUserProfile(Outfit outfit)

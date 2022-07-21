@@ -7,7 +7,7 @@ namespace FinalProjApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CurrentWeatherController : ControllerBase
+    public class CurrentWeatherController : BaseController
     {
         private IAccuWeatherService _accuWeatherService;
         public CurrentWeatherController(IAccuWeatherService accuWeatherService)
