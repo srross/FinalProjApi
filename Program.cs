@@ -14,9 +14,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IAccuWeatherService, AccuWeatherService>();
 builder.Services.AddScoped<IOutfitService, OutfitService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddDbContext<FinalProjectDBContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("AppDb")));
 
+// This is where token stuff happens (user authenticated with Auth 0)
 string domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>

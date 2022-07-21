@@ -6,7 +6,7 @@ namespace FinalProjApi.Services.Interfaces
     {
         List<Outfit> GetOutfitByTemperature(double currentTemperature);
         List<Outfit> GetAllOutfits();
-        List<Outfit> GetAllOutfitsByUserId(int userId);
+        List<Outfit> GetAllOutfitsByAuthId(string authId);
         void AddOutfitToUserProfile(Outfit outfit);
         void DeleteUserOutfit(int id);
         void UpdateUserOutfit(int id, Outfit outfit);      

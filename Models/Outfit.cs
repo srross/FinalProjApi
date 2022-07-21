@@ -11,5 +11,7 @@
 		public string? OutfitImage { get; set; }
 		public int UserId { get; set; } // Foreign Key
 		public double MaxTemperature { get; set; }
+
+		public string AuthUserId { get; set; }
 	}
 }

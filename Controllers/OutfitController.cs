@@ -7,7 +7,7 @@ namespace FinalProjApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OutfitController : ControllerBase
+    public class OutfitController : BaseController
     {
         private readonly IOutfitService _outfitService;
 
@@ -31,10 +31,10 @@ namespace FinalProjApi.Controllers
         }
 
         // GET: 'Outfit/GetAllOutfitsByUserId/1
-        [HttpGet("GetAllOutfitsByUserId/{userId}")]
-        public List<Outfit> GetAllOutfitsByUserId(int userId)
+        [HttpGet("GetAllOutfitsByAuthId")]
+        public List<Outfit> GetAllOutfitsByAuthId()
         {
-            return _outfitService.GetAllOutfitsByUserId(userId);
+            return _outfitService.GetAllOutfitsByAuthId(GetUserAuthId());
         }
 
         // POST: Outfit/AddOutfitToUserProfile, outfitObj
@@ -45,7 +45,7 @@ namespace FinalProjApi.Controllers
 
             _outfitService.AddOutfitToUserProfile(outfitObj);
 
-            return _outfitService.GetAllOutfitsByUserId(userId);
+            return _outfitService.GetAllOutfitsByAuthId(GetUserAuthId());
         }
 
         // PUT: api/Outfit/5
