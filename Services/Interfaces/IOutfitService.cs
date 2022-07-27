@@ -1,14 +1,15 @@
 ﻿using FinalProjApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinalProjApi.Services.Interfaces
 {
     public interface IOutfitService
     {
-        List<Outfit> GetOutfitByTemperature(double currentTemperature);
+        List<Outfit> GetOutfitByTemperature(string authUserId, double currentTemperature);
         List<Outfit> GetAllOutfits();
-        List<Outfit> GetAllOutfitsByAuthId(string authId);
-        void AddOutfitToUserProfile(Outfit outfit);
-        void DeleteUserOutfit(int id);
-        void UpdateUserOutfit(int id, Outfit outfit);      
+        List<Outfit> GetAllOutfitsByAuthUserId(string authId);
+        string AddOutfitToUserProfile(string authUserId, Outfit outfit);
+        string DeleteUserOutfit(string authUserId, int outfitId);
+        string UpdateUserOutfit(string authUserId, int outfitId, Outfit outfit);
     }
 }

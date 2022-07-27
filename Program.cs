@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IAccuWeatherService, AccuWeatherService>();
 builder.Services.AddScoped<IOutfitService, OutfitService>();
-builder.Services.AddScoped<IUserService, UserService>();
+//builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddDbContext<FinalProjectDBContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("AppDb")));
 

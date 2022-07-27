@@ -9,11 +9,13 @@ namespace FinalProjApi.Controllers
         protected string GetUserAuthId()
         {
             var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            var defaultAuthUserId = "defaultUserAuthUserId123456789";
+
             if (userNameClaim != null)
             {
                 return userNameClaim.Value;
             }
-            return "none";
+            return defaultAuthUserId;
         }
     }
 }

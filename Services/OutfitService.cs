@@ -1,8 +1,9 @@
-﻿using FinalProjApi.Data;
+﻿using FinalProjApi.Controllers;
+using FinalProjApi.Data;
 using FinalProjApi.Models;
 using FinalProjApi.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace FinalProjApi.Services
 
@@ -16,9 +17,21 @@ namespace FinalProjApi.Services
             _context = context;
         }
 
-        public List<Outfit> GetOutfitByTemperature(double currentTemperature)
+        public List<Outfit> GetOutfitByTemperature(string authUserId, double currentTemperature)
         {
-            return _context.Outfits.Where(x => x.MinTemperature <= currentTemperature && x.MaxTemperature >= currentTemperature).ToList();
+            var outfit = new List<Outfit>();
+
+            outfit = _context.Outfits.Where(x => x.MinTemperature <= currentTemperature
+                                               && x.MaxTemperature >= currentTemperature
+                                               && x.AuthUserId == authUserId).ToList();
+            if(outfit.Count == 0)
+            {
+                var defaultOutfit = _context.Outfits.Where(x => x.MinTemperature <= currentTemperature
+                                               && x.MaxTemperature >= currentTemperature
+                                               && x.AuthUserId == "defaultUserAuthUserId123456789").ToList();
+                return defaultOutfit;
+            }
+            return outfit;
         }
 
         public List<Outfit> GetAllOutfits()
@@ -26,67 +39,77 @@ namespace FinalProjApi.Services
             return _context.Outfits.ToList();
         }
 
-        public List<Outfit> GetAllOutfitsByAuthId(string authId)
+        public List<Outfit> GetAllOutfitsByAuthUserId(string authId)
         {
             return _context.Outfits.Where(x => x.AuthUserId == authId).ToList();
         }
 
-        public async void AddOutfitToUserProfile(Outfit outfit)
+        public string AddOutfitToUserProfile(string authUserId, Outfit outfit)
         {
-            if (_context.Outfits == null)
+            // check for existing outfit in temperature range. if exists, return that outfit for update
+            var existingOutfit = _context.Outfits.Where(o => o.MinTemperature == outfit.MinTemperature
+                                                          && o.MaxTemperature == outfit.MaxTemperature
+                                                          && o.AuthUserId == authUserId);
+
+            if (existingOutfit.Any())
             {
-                //return Problem("Entity set 'FinalProjectDBContext.Outfits'  is null.");
-            }
-            _context.Outfits.Add(outfit);
-
-            _context.SaveChangesAsync();
-        }
-
-        public void DeleteUserOutfit(int id)
-        {
-            var outfit = _context.Outfits.Find(id);
-
-            if (outfit == null)
-            {
-                //return NotFound();
+                return $"Outfit already exist for temperature range {outfit.MinTemperature} - {outfit.MaxTemperature}.";
             }
 
-            _context.Outfits.Remove(outfit);
-
-            _context.SaveChangesAsync();
-        }
-
-        public void UpdateUserOutfit(int id, Outfit outfit)
-        {
-            if (id != outfit.Id)
-            {
-                //return "BadRequest";
-            }
-
-            _context.Entry(outfit).State = EntityState.Modified;
+            _context.Entry(outfit).State = EntityState.Added;
 
             try
             {
                 _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch
             {
-                if (!OutfitExists(id))
-                {
-                    //return "NotFound";
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
-            //return "Looks like it worked.";
+            return "success";
         }
 
-        private bool OutfitExists(int id)
+        public string UpdateUserOutfit(string authUserId, int outfitId, Outfit outfit)
         {
-            return (_context.Outfits?.Any(e => e.Id == id)).GetValueOrDefault();
+            _context.Entry(outfit).State = EntityState.Modified;
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            return "success message";
+        }
+
+        public string DeleteUserOutfit(string authUserId, int outfitId)
+        {
+            var outfit = _context.Outfits.Find(outfitId);
+
+            if (outfit == null)
+            {
+                return "Outfit not found";
+            }
+
+            if (outfit.AuthUserId == "defaultUserAuthUserId123456789")
+            {
+                return "Deletion of default outfit not allowed.";
+            }
+
+            _context.Entry(outfit).State = EntityState.Deleted;
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            return "success message";
         }
     }
 }
