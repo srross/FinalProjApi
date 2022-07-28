@@ -111,5 +111,11 @@ namespace FinalProjApi.Services
             }
             return "success message";
         }
+        public Outfit GetOutfitById(int id)
+        {
+            var outfit = _context.Outfits.Find(id);
+            return outfit;
+        }
+
     }
 }

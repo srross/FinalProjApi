@@ -68,5 +68,11 @@ namespace FinalProjApi.Controllers
         {
             return _outfitService.DeleteUserOutfit(GetUserAuthId(), outfitId);
         }
+
+        [HttpGet("GetOutfitById")]
+        public IActionResult GetOutfitById(int id)
+        {
+            return Ok(_outfitService.GetOutfitById(id));
+        }
     }
 }
