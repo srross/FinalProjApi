@@ -31,7 +31,7 @@ namespace FinalProjApi.Controllers
         }
 
         // GET: 'Outfit/GetAllOutfitsByAuthUserId/1
-        [HttpGet("GetAllOutfitsByAuthUserId")]
+        [HttpGet("GetAllOutfitsByAuthId")]
         public List<Outfit> GetAllOutfitsByAuthUserId()
         {
             return _outfitService.GetAllOutfitsByAuthUserId(GetUserAuthId());
@@ -64,9 +64,10 @@ namespace FinalProjApi.Controllers
 
         // DELETE: api/OutfitA/5
         [HttpDelete("DeleteUserOutfit/{outfitId}")]
-        public string DeleteUserOutfit(string authUserId, int outfitId)
+        public IActionResult DeleteUserOutfit(int outfitId)
         {
-            return _outfitService.DeleteUserOutfit(GetUserAuthId(), outfitId);
+           var message= _outfitService.DeleteUserOutfit(GetUserAuthId(), outfitId);
+            return NoContent();
         }
     }
 }
