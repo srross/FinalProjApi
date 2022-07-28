@@ -20,7 +20,7 @@ namespace FinalProjApi.Controllers
         [HttpGet("GetOutfitByTemperature/{temperature}")]
         public List<Outfit> GetOutfitByTemperature(double temperature)
         {
-            return _outfitService.GetOutfitByTemperature(temperature);
+            return _outfitService.GetOutfitByTemperature(GetUserAuthId(), temperature);
         }
 
         // GET: 'Outfit/GetAllOutfits'
@@ -30,49 +30,43 @@ namespace FinalProjApi.Controllers
             return _outfitService.GetAllOutfits();
         }
 
-        // GET: 'Outfit/GetAllOutfitsByUserId/1
-        [HttpGet("GetAllOutfitsByAuthId")]
-        public List<Outfit> GetAllOutfitsByAuthId()
+        // GET: 'Outfit/GetAllOutfitsByAuthUserId/1
+        [HttpGet("GetAllOutfitsByAuthUserId")]
+        public List<Outfit> GetAllOutfitsByAuthUserId()
         {
-            return _outfitService.GetAllOutfitsByAuthId(GetUserAuthId());
+            return _outfitService.GetAllOutfitsByAuthUserId(GetUserAuthId());
+
         }
 
         // POST: Outfit/AddOutfitToUserProfile, outfitObj
         [HttpPost("AddOutfitToUserProfile")]
-        public List<Outfit> AddOutfitToUserProfile(Outfit outfitObj)
+        public void AddOutfitToUserProfile(Outfit outfit)
         {
-            var userId = outfitObj.Id;
-
-            _outfitService.AddOutfitToUserProfile(outfitObj);
-
-            return _outfitService.GetAllOutfitsByAuthId(GetUserAuthId());
+            _outfitService.AddOutfitToUserProfile(GetUserAuthId(), outfit);
         }
 
         // PUT: api/Outfit/5
         [HttpPut("UpdateUserOutfit/{outfitId}")]
-        public void UpdateUserOutfit(int outfitId, Outfit outfitObj)
+        public string UpdateUserOutfit(string authUserId, int outfitId, Outfit outfit)
         {
-            // maybe add userId 999 as a condition check on default outfit.
-            // add check for doesOutfitExist()
-            if (outfitId > 8)
+            if (outfit.AuthUserId == "defaultUserAuthUserId123456789")
             {
-                _outfitService.UpdateUserOutfit(outfitId, outfitObj);
-                //return NoContent();
+                return "Update to default outfit not allowed.";
             }
+
+            if (authUserId != outfit.AuthUserId || outfitId != outfit.Id)
+            {
+                return "Id mismatch";
+            }
+
+            return _outfitService.UpdateUserOutfit(GetUserAuthId(), outfitId, outfit);
         }
 
         // DELETE: api/OutfitA/5
-        // Consider soft delete for user outfit history ( add isActive or archive column to table)
         [HttpDelete("DeleteUserOutfit/{outfitId}")]
-        public void DeleteUserOutfit(int outfitId)
+        public string DeleteUserOutfit(string authUserId, int outfitId)
         {
-            // maybe add userId 999 as a condition check on default outfit.
-            // add check for doesOutfitExist()
-            if (outfitId > 8)
-            {
-                _outfitService.DeleteUserOutfit(outfitId);
-                //return NoContent();
-            }
+            return _outfitService.DeleteUserOutfit(GetUserAuthId(), outfitId);
         }
     }
 }
