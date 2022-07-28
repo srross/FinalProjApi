@@ -47,19 +47,15 @@ namespace FinalProjApi.Controllers
 
         // PUT: api/Outfit/5
         [HttpPut("UpdateUserOutfit/{outfitId}")]
-        public string UpdateUserOutfit(string authUserId, int outfitId, Outfit outfit)
+        public IActionResult UpdateUserOutfit(int outfitId, Outfit outfit)
         {
             if (outfit.AuthUserId == "defaultUserAuthUserId123456789")
             {
-                return "Update to default outfit not allowed.";
+                return BadRequest();
             }
 
-            if (authUserId != outfit.AuthUserId || outfitId != outfit.Id)
-            {
-                return "Id mismatch";
-            }
-
-            return _outfitService.UpdateUserOutfit(GetUserAuthId(), outfitId, outfit);
+            var update= _outfitService.UpdateUserOutfit(GetUserAuthId(), outfitId, outfit);
+            return NoContent();
         }
 
         // DELETE: api/OutfitA/5
