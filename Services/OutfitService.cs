@@ -55,7 +55,7 @@ namespace FinalProjApi.Services
             {
                 return $"Outfit already exist for temperature range {outfit.MinTemperature} - {outfit.MaxTemperature}.";
             }
-
+            outfit.AuthUserId = authUserId;
             _context.Entry(outfit).State = EntityState.Added;
 
             try
@@ -105,7 +105,7 @@ namespace FinalProjApi.Services
             {
                 _context.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
                 throw;
             }
